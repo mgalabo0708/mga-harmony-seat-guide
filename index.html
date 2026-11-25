@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harmony 座席からの見え方 | ミセスLABO</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 20px;
+  background: #f5f7f1;
+  color: #34483b;
+  font-family: sans-serif;
+}
+header { text-align: center; margin-bottom: 24px; }
+h1 { font-size: 23px; }
+.subtitle { color: #718071; font-size: 13px; }
+.map {
+  position: relative;
+  max-width: 850px;
+  margin: auto;
+  background: white;
+  padding: 12px;
+  border-radius: 14px;
+}
+.map img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.marker {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 3px solid white;
+  border-radius: 50%;
+  background: #e84c4c;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 7px #5558;
+}
+.note {
+  max-width: 850px;
+  margin: 18px auto;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: #0009;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow: auto;
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+}
+.modal-content img {
+  width: 100%;
+  max-height: 55vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  border: 0;
+  background: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+.info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+.info div {
+  background: #f2f6ef;
+  padding: 10px;
+  border-radius: 8px;
+}
+.info small { display: block; color: #718071; }
+footer {
+  text-align: center;
+  font-size: 11px;
+  color: #788477;
+  margin: 30px 0;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">MGA LIVE LABO</div>
+  <h1>Harmony 座席からの見え方 MAP</h1>
+  <p class="subtitle">座席表の赤い印をタップして写真を確認できます</p>
+</header>
+
+<div class="map" id="map">
+  <img src="seatmap.png" alt="会場座席表">
+</div>
+
+<p class="note">
+  ※写真は過去公演で撮影された参考画像です。
+  Harmony2当日の見え方を保証するものではありません。
+  座席情報は提供者の希望に応じて一部非公開にできます。
+</p>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="close" onclick="closeModal()">×</button>
+    <h2 id="photoTitle">座席からの見え方</h2>
+    <img id="photo" src="" alt="座席から撮影したステージ写真">
+    <div class="info">
+      <div><small>階</small><strong id="floor">未登録</strong></div>
+      <div><small>ブロック</small><strong id="block">未登録</strong></div>
+      <div><small>列</small><strong id="row">未登録</strong></div>
+      <div><small>席番</small><strong id="seat">未登録</strong></div>
+    </div>
+    <p id="comment"></p>
+  </div>
+</div>
+
+<footer>
+  ミセスLABO｜ファンによる座席情報共有プロジェクト
+</footer>
+
+<script>
+const samples = [
+  {
+    id: 1, x: 50, y: 50,
+    floor: "未登録", block: "未登録",
+    row: "未登録", seat: "未登録",
+    photo: "photo1.jpg",
+    comment: "写真と座席情報はこれから登録します。"
+  }
+];
+
+const map = document.getElementById("map");
+
+samples.forEach(item => {
+  const marker = document.createElement("button");
+  marker.className = "marker";
+  marker.textContent = item.id;
+  marker.style.left = item.x + "%";
+  marker.style.top = item.y + "%";
+  marker.setAttribute("aria-label", "写真 " + item.id);
+  marker.onclick = () => openModal(item);
+  map.appendChild(marker);
+});
+
+function openModal(item) {
+  document.getElementById("photoTitle").textContent =
+    "写真 " + item.id + "｜座席からの見え方";
+  document.getElementById("photo").src = item.photo;
+  document.getElementById("floor").textContent = item.floor;
+  document.getElementById("block").textContent = item.block;
+  document.getElementById("row").textContent = item.row;
+  document.getElementById("seat").textContent = item.seat;
+  document.getElementById("comment").textContent = item.comment;
+  document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+document.getElementById("modal").addEventListener("click", event => {
+  if (event.target.id === "modal") closeModal();
+});
+</script>
+</body>
+</html>
