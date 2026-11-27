@@ -133,6 +133,7 @@ footer {
       <div><small>列</small><strong id="row">未登録</strong></div>
       <div><small>席番</small><strong id="seat">未登録</strong></div>
     </div>
+    <p>写真提供：<strong id="provider">未登録</strong></p>
     <p id="comment"></p>
   </div>
 </div>
@@ -148,6 +149,7 @@ const samples = [
     floor: "未登録", block: "未登録",
     row: "未登録", seat: "未登録",
     photo: "photo1.jpg",
+    provider: "未登録",
     comment: "写真と座席情報はこれから登録します。"
   }
 ];
@@ -173,6 +175,7 @@ function openModal(item) {
   document.getElementById("block").textContent = item.block;
   document.getElementById("row").textContent = item.row;
   document.getElementById("seat").textContent = item.seat;
+  document.getElementById("provider").textContent = item.provider;
   document.getElementById("comment").textContent = item.comment;
   document.getElementById("modal").style.display = "flex";
 }
